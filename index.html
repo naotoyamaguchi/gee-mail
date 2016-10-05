@@ -1,18 +1,132 @@
 <html>
 	<head>
 		<script src="js/mail-generator.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link href="css/style.css" rel="stylesheet" media="screen">
     <script>
       window.onload = function(){
         // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE. 
         // We have to use window.onload so your JavaScript doesn't execute until the page has loaded and all HTML has been downloaded to your browser
+        var emails = window.geemails;
+
+
+
+        // console.log(emails); 
+        // this is an array of the sample emails (.body / .date / .sender / .subject)
+        var whereTheEmailsGo = document.getElementById('emailList');
+
         
+
+
+        // console.log(newEmail);
+
+        for (var i=0; i<emails.length; i++){
+            var emailBox = document.createElement('div');
+            emailBox.className = "emailBoxClass";
+            whereTheEmailsGo.appendChild(emailBox);
+            emailBox.addEventListener('click', toggleEmail);
+
+            var emailSender = document.createElement('div');
+            emailSender.className = "emailSenderClass";
+            emailSender.innerHTML = "<span class=senderSpan>Sender</span>"+" : "+emails[i].sender;
+            emailBox.appendChild(emailSender);
+
+            var emailDate = document.createElement('div');
+            emailDate.className = "emailDateClass";
+            emailDate.innerHTML = "<span class=dateSpan>Date</span>"+" : "+emails[i].date;
+            emailBox.appendChild(emailDate);
+
+            var emailSubject = document.createElement('div');
+            emailSubject.className = "emailSubjectClass";
+            emailSubject.innerHTML = "<span class=subjectSpan>Subject</span>"+" : "+emails[i].subject;
+            emailBox.appendChild(emailSubject);
+
+            var emailBody = document.createElement('div');
+            emailBody.className = "emailBodyClass";
+            emailBody.innerHTML = emails[i].body;
+            emailBody.style.display = 'none';
+            emailBox.appendChild(emailBody);
+
+        }
+
+
+        var specialCounter = document.getElementById('inboxCounter');
+        specialCounter.innerHTML = "(" +  i + ") Inbox";
+
+
+
+        function createNewEmail(){
+            var newEmail = window.getNewMessage();
+
+            var emailBox = document.createElement('div');
+            emailBox.className = "emailBoxClass";
+            // whereTheEmailsGo.appendChild(emailBox);
+            emailBox.addEventListener('click', toggleEmail);
+
+            var emailSender = document.createElement('div');
+            emailSender.className = "emailSenderClass";
+            emailSender.innerHTML = "<span class=senderSpan>Sender</span>"+" : "+newEmail.sender;
+            emailBox.appendChild(emailSender);
+
+            var emailDate = document.createElement('div');
+            emailDate.className = "emailDateClass";
+            emailDate.innerHTML = "<span class=dateSpan>Date</span>"+" : "+newEmail.date;
+            emailBox.appendChild(emailDate);
+
+            var emailSubject = document.createElement('div');
+            emailSubject.className = "emailSubjectClass";
+            emailSubject.innerHTML = "<span class=subjectSpan>Subject</span>"+" : "+newEmail.subject;
+            emailBox.appendChild(emailSubject);
+
+            var emailBody = document.createElement('div');
+            emailBody.className = "emailBodyClass";
+            emailBody.innerHTML = newEmail.body;
+            emailBody.style.display = 'none';
+            emailBox.appendChild(emailBody);
+            whereTheEmailsGo.insertBefore(emailBox, whereTheEmailsGo.childNodes[0]);
+
+            i++;
+            specialCounter.innerHTML = "(" +  i + ") Inbox";
+            
+            
+
+        }
+
+
+        setInterval(createNewEmail, 3000);
+
+        
+
+        function toggleEmail(){
+            var theEmailBody = this.querySelectorAll('.emailBodyClass')[0];
+            console.log(theEmailBody);
+
+            if (theEmailBody.style.display === 'none'){
+                theEmailBody.style.display = 'block';
+            } else {
+                theEmailBody.style.display = 'none';
+            }
+        }
+
       };
     </script>
 	</head>
 	<body>
 		<div class="container" id="main">
-			Build Me!
+			<h1>Gee-mail</h1>
 		</div>
+		<div class="HeadbarClass" id="Headline toolbar">
+            <button type="button" class="btn btn-primary" id="inboxCounter">Inbox</button>
+            <br>
+            <button type="button" class="btn btn-success">Sent</button>
+            <br>
+            <button type="button" class="btn btn-warning">Compose</button>
+            <br>
+            <button type="button" class="btn btn-info">Junk</button>
+		</div>
+		<div class="mainBody" id="emailList">
+		</div>
+
 	</body>
 </html>
